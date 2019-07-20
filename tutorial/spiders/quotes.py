@@ -19,4 +19,5 @@ class QuotesSpider(scrapy.Spider):
             yield item
         next = response.css('.pager .next a::attr("href")').get()
         url = response.urljoin(next)
+        # 递归调用parse，实现翻页解析
         yield scrapy.Request(url=url, callback=self.parse)
