@@ -42,6 +42,7 @@ class MongoPipeline(object):
         self.db = self.client[self.mongo_db]
 
     def process_item(self, item, spider):
+        # 获取item所属类的名称，并以此作为数据库的集合名
         name = item.__class__.__name__
         self.db[name].insert(dict(item))
         return item

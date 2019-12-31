@@ -6,6 +6,7 @@
 # https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+import random
 
 
 class TutorialSpiderMiddleware(object):
@@ -101,3 +102,22 @@ class TutorialDownloaderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+class RandomUserAgentMiddleware(object):
+
+    def __init__(self):
+        self.user_agents = [
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ',
+            'AppleWebKit/537.36 (KHTML, like Gecko) ',
+            'Chrome/79.0.3945.88 Safari/537.36'
+        ]
+
+    def process_request(self, request, spider):
+        # 随机取一个user-agent，但是不知道如何测试2019-12-31
+        request.headers['User-Agent'] = random.choice(self.user_agents)
+
+    def process_response(self, request, response, spider):
+        # 修改返回状态
+        response.status = 201
+        return response
